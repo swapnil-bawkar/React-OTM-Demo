@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --inline --hot --debug --inline-source-map"
+    "start": "webpack-dev-server --inline --hot --debug --inline-source-map",
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",

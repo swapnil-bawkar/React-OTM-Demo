@@ -5,7 +5,6 @@ var React = require('react');
 
 var Main = React.createClass({
    render: function() {
-       console.log(this);
        return (
         <div className="main">
             {this.props.children}

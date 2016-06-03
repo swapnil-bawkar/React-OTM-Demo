@@ -22,6 +22,7 @@ var Home = React.createClass({
             });
         }.bind(this));
     },
+    
     render: function () {
         return (
             <div className="home">
@@ -37,7 +38,7 @@ var Home = React.createClass({
         );
     },
     handleClick: function () {
-        browserHistory.push('/engine/1')
+        browserHistory.push('/question/1')
     }
 });
 
