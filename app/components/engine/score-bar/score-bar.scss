@@ -14,5 +14,25 @@
       flex: 1;
       height: 8px;
     }
+    .correct {
+      background-color: #93C70A;
+      -webkit-transform: scaleX(1);
+      -ms-transform: scaleX(1);
+      transform: scaleX(1);
+      opacity: 1;
+    }
+    .incorrect {
+      background-color: #D63400;
+      -webkit-transform: scaleX(1);
+      -ms-transform: scaleX(1);
+      transform: scaleX(1);
+      opacity: 1;
+    }
+    :first-child {
+      border-radius: 7px 0 0 7px;
+    }
+    :last-child {
+      border-radius: 0 7px 7px 0;
+    }
   }
 }

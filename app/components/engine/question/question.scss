@@ -28,9 +28,38 @@
       }
     }
   }
+  .feedback {
+    flex: 1 1 auto;
+    ul {
+      list-style: none;
+      margin-top: -8px;
+      li {
+        color: rgba(0,0,0,0.87);
+        background-color: rgb(255,255,255);
+        padding: 24px;
+        margin: 0 40px 16px 0;
+        border-radius: 2px;
+        box-shadow: 0 2px 3px 0 rgba(0,0,0,0.3);
+        line-height: 1.3;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .correct-answer {
+        color: #FFF;
+        background-color: #93C70A;
+        line-height: 1.3;
+      }
+      .in-correct-answer {
+        color: #FFF;
+        background-color: #D63400;
+        line-height: 1.3;
+      }
+    }
+  }
   .footer-btn {
     display: flex;
     flex-direction: column;
+    color: rgba(0,0,0,0.87);
+    background-color: rgb(255,255,255);
     button {
       height: 46px;
     }

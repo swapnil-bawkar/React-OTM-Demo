@@ -11,7 +11,9 @@ var Engine = React.createClass({
     getInitialState: function() {
         return {
             questions: [],
-            currentQuestion: {}
+            currentQuestion: undefined,
+            index: 0,
+            endOfQuestion: false
         };
     },
     componentDidMount: function() {
@@ -24,13 +26,50 @@ var Engine = React.createClass({
         }.bind(this));
     },
     render: function() {
-        console.log(this.state);
         return (
             <div className="question-container">
-                <ScoreBar length={this.state.questions.length}></ScoreBar>
-                <Question question={this.state.currentQuestion}></Question>
+                <ScoreBar questions={this.state.questions}></ScoreBar>
+                <Question question={this.state.currentQuestion}
+                          nextBtn={this.nextBtn}
+                          updateScoreBar={this.updateScoreBar}
+                          setUserAnswer={this.setUserAnswer} 
+                          endOfQuestion={this.state.endOfQuestion}></Question>
             </div>
         );
+    },
+    nextBtn: function() {
+        var index = this.state.index;
+        if(index < this.state.questions.length - 1) {
+            index++;
+            var nextQuestion = this.state.questions[index];
+            this.setState({
+                index: index,
+                currentQuestion: nextQuestion
+            });
+        }
+    },
+    updateScoreBar: function(correct) {
+        var questions = this.state.questions;
+        var currentQuestion = questions[this.state.index];
+        currentQuestion.checkBtnClicked = true;
+        currentQuestion.correct = correct;
+        var endOfQuestion = false;
+        if(this.state.index === this.state.questions.length - 1) {
+            endOfQuestion = true;
+        }
+        this.setState({
+            questions: questions,
+            endOfQuestion: endOfQuestion
+        });
+    },
+    setUserAnswer: function(userAnswer) {
+        var questions = this.state.questions;
+        var currentQuestion = questions[this.state.index];
+        currentQuestion.userAnswer = userAnswer;
+        var index = this.state.index;
+        this.setState({
+            questions: questions
+        });
     }
 });
 

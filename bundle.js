@@ -25958,7 +25958,7 @@
 	        );
 	    },
 	    handleClick: function handleClick() {
-	        browserHistory.push('/question/1');
+	        browserHistory.push('/question/0');
 	    }
 	});
 
@@ -28281,7 +28281,7 @@
 	var API = __webpack_require__(232);
 	var ScoreBar = __webpack_require__(258);
 	var Question = __webpack_require__(261);
-	__webpack_require__(264);
+	__webpack_require__(266);
 
 	var Engine = React.createClass({
 	    displayName: 'Engine',
@@ -28289,7 +28289,9 @@
 	    getInitialState: function getInitialState() {
 	        return {
 	            questions: [],
-	            currentQuestion: {}
+	            currentQuestion: undefined,
+	            index: 0,
+	            endOfQuestion: false
 	        };
 	    },
 	    componentDidMount: function componentDidMount() {
@@ -28302,13 +28304,50 @@
 	        }.bind(this));
 	    },
 	    render: function render() {
-	        console.log(this.state);
 	        return React.createElement(
 	            'div',
 	            { className: 'question-container' },
-	            React.createElement(ScoreBar, { length: this.state.questions.length }),
-	            React.createElement(Question, { question: this.state.currentQuestion })
+	            React.createElement(ScoreBar, { questions: this.state.questions }),
+	            React.createElement(Question, { question: this.state.currentQuestion,
+	                nextBtn: this.nextBtn,
+	                updateScoreBar: this.updateScoreBar,
+	                setUserAnswer: this.setUserAnswer,
+	                endOfQuestion: this.state.endOfQuestion })
 	        );
+	    },
+	    nextBtn: function nextBtn() {
+	        var index = this.state.index;
+	        if (index < this.state.questions.length - 1) {
+	            index++;
+	            var nextQuestion = this.state.questions[index];
+	            this.setState({
+	                index: index,
+	                currentQuestion: nextQuestion
+	            });
+	        }
+	    },
+	    updateScoreBar: function updateScoreBar(correct) {
+	        var questions = this.state.questions;
+	        var currentQuestion = questions[this.state.index];
+	        currentQuestion.checkBtnClicked = true;
+	        currentQuestion.correct = correct;
+	        var endOfQuestion = false;
+	        if (this.state.index === this.state.questions.length - 1) {
+	            endOfQuestion = true;
+	        }
+	        this.setState({
+	            questions: questions,
+	            endOfQuestion: endOfQuestion
+	        });
+	    },
+	    setUserAnswer: function setUserAnswer(userAnswer) {
+	        var questions = this.state.questions;
+	        var currentQuestion = questions[this.state.index];
+	        currentQuestion.userAnswer = userAnswer;
+	        var index = this.state.index;
+	        this.setState({
+	            questions: questions
+	        });
 	    }
 	});
 
@@ -28330,13 +28369,17 @@
 	    displayName: 'ScoreBar',
 
 	    propTypes: {
-	        length: React.PropTypes.number.isRequired
+	        questions: React.PropTypes.array.isRequired
 	    },
 	    render: function render() {
-	        var questionBar = [];
-	        for (var i = 0; i < this.props.length; i++) {
-	            questionBar.push(React.createElement('div', { key: i }));
-	        }
+	        var questionBar = this.props.questions.map(function (question, index) {
+	            if (question.checkBtnClicked) {
+	                return React.createElement('div', { key: index, className: question.correct ? 'correct' : 'incorrect' });
+	            } else {
+	                return React.createElement('div', { key: index });
+	            }
+	        });
+
 	        return React.createElement(
 	            'div',
 	            { className: 'score-bar-container' },
@@ -28385,7 +28428,7 @@
 
 
 	// module
-	exports.push([module.id, ".score-bar-container {\n  padding: 8px;\n  background-color: #195c61; }\n  .score-bar-container .score-bar {\n    display: flex;\n    flex-direction: row;\n    flex: 1 1 auto;\n    padding: 0;\n    background-color: white;\n    border-radius: 8px;\n    position: relative;\n    z-index: 3; }\n    .score-bar-container .score-bar div {\n      flex: 1;\n      height: 8px; }\n", ""]);
+	exports.push([module.id, ".score-bar-container {\n  padding: 8px;\n  background-color: #195c61; }\n  .score-bar-container .score-bar {\n    display: flex;\n    flex-direction: row;\n    flex: 1 1 auto;\n    padding: 0;\n    background-color: white;\n    border-radius: 8px;\n    position: relative;\n    z-index: 3; }\n    .score-bar-container .score-bar div {\n      flex: 1;\n      height: 8px; }\n    .score-bar-container .score-bar .correct {\n      background-color: #93C70A;\n      -webkit-transform: scaleX(1);\n      -ms-transform: scaleX(1);\n      transform: scaleX(1);\n      opacity: 1; }\n    .score-bar-container .score-bar .incorrect {\n      background-color: #D63400;\n      -webkit-transform: scaleX(1);\n      -ms-transform: scaleX(1);\n      transform: scaleX(1);\n      opacity: 1; }\n    .score-bar-container .score-bar :first-child {\n      border-radius: 7px 0 0 7px; }\n    .score-bar-container .score-bar :last-child {\n      border-radius: 0 7px 7px 0; }\n", ""]);
 
 	// exports
 
@@ -28400,7 +28443,9 @@
 	 * Created by sbawkar on 6/3/2016.
 	 */
 	var React = __webpack_require__(1);
-	__webpack_require__(262);
+	var AnswerList = __webpack_require__(262);
+	var FeedBackList = __webpack_require__(263);
+	__webpack_require__(264);
 
 	var Question = React.createClass({
 	    displayName: 'Question',
@@ -28408,54 +28453,78 @@
 	    propTypes: {
 	        question: React.PropTypes.object
 	    },
-	    render: function render() {
-	        var options = '';
-	        if (this.props.question.answers) {
-	            options = this.props.question.answers.answer.map(function (option, index) {
-	                return React.createElement(
-	                    'li',
-	                    { key: index },
-	                    option
-	                );
+	    getInitialState: function getInitialState() {
+	        return {
+	            btnText: 'CHECK',
+	            feedback: '',
+	            feedbackClass: ''
+	        };
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        if (nextProps.endOfQuestion) {
+	            this.setState({
+	                btnText: 'VIEW RESULTS'
 	            });
 	        }
-
+	    },
+	    render: function render() {
 	        return React.createElement(
 	            'div',
 	            { className: 'question' },
-	            React.createElement(
-	                'div',
-	                { className: 'image-wrapper' },
-	                React.createElement('img', { src: '' })
-	            ),
 	            React.createElement(
 	                'div',
 	                { className: 'question-text-wrapper' },
 	                React.createElement(
 	                    'p',
 	                    null,
-	                    this.props.question.text
+	                    this.props.question && this.props.question.text
 	                )
 	            ),
-	            React.createElement(
-	                'div',
-	                { className: 'question-options' },
-	                React.createElement(
-	                    'ul',
-	                    null,
-	                    options
-	                )
-	            ),
+	            this.props.question && !this.props.question.checkBtnClicked && React.createElement(AnswerList, { answers: this.props.question.answers.answer,
+	                setUserAnswer: this.setUserAnswer }),
+	            this.props.question && this.props.question.checkBtnClicked && React.createElement(FeedBackList, { feedbackClass: this.state.feedbackClass,
+	                userAnswer: this.props.question.userAnswer,
+	                feedback: this.state.feedback }),
 	            React.createElement(
 	                'div',
 	                { className: 'footer-btn' },
 	                React.createElement(
 	                    'button',
 	                    { type: 'button', onClick: this.handleClick },
-	                    'NEXT'
+	                    this.state.btnText
 	                )
 	            )
 	        );
+	    },
+	    handleClick: function handleClick(event) {
+	        if (event.currentTarget.innerHTML === 'NEXT') {
+	            this.props.nextBtn();
+	            this.setState({
+	                btnText: 'CHECK',
+	                feedback: '',
+	                feedbackClass: ''
+	            });
+	        } else {
+	            this.showFeedBack();
+	        }
+	    },
+	    showFeedBack: function showFeedBack() {
+	        var index = this.props.question.answers.answer.indexOf(this.props.question.userAnswer);
+	        var correct = false;
+	        if (index === 0) {
+	            correct = true;
+	        }
+	        var feedback = correct ? 'Well Done' : 'The correct answer was ' + this.props.question.answers.answer[0];
+	        var feedbackClass = correct ? 'correct-answer' : 'in-correct-answer';
+	        this.setState({
+	            btnText: 'NEXT',
+	            feedback: feedback,
+	            feedbackClass: feedbackClass
+	        });
+	        this.props.updateScoreBar(correct);
+	    },
+	    setUserAnswer: function setUserAnswer(option) {
+	        this.props.setUserAnswer(option);
 	    }
 	});
 
@@ -28465,10 +28534,96 @@
 /* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	/**
+	 * Created by iag on 6/6/16.
+	 */
+	var React = __webpack_require__(1);
+
+	var AnswerList = React.createClass({
+	    displayName: "AnswerList",
+
+	    render: function render() {
+	        var options = this.props.answers.map(function (option, index) {
+	            return React.createElement(
+	                "li",
+	                { key: index, onClick: this.onAnswerClick.bind(this, option) },
+	                React.createElement(
+	                    "p",
+	                    null,
+	                    option
+	                )
+	            );
+	        }.bind(this));
+	        return React.createElement(
+	            "div",
+	            { className: "question-options", ref: "questionOption" },
+	            React.createElement(
+	                "ul",
+	                { className: "option-ul" },
+	                options
+	            )
+	        );
+	    },
+	    onAnswerClick: function onAnswerClick(option, event) {
+	        this.props.setUserAnswer(option);
+	        if (this.selectedTarget) {
+	            this.selectedTarget.style.backgroundColor = '#fff';
+	        }
+	        event.currentTarget.style.backgroundColor = '#FFC400';
+	        this.selectedTarget = event.currentTarget;
+	    }
+	});
+
+	module.exports = AnswerList;
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	/**
+	 * Created by iag on 6/6/16.
+	 */
+	var React = __webpack_require__(1);
+
+	var FeedBackList = React.createClass({
+	    displayName: "FeedBackList",
+
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            { className: "feedback", ref: "feedback" },
+	            React.createElement(
+	                "ul",
+	                null,
+	                React.createElement(
+	                    "li",
+	                    { className: this.props.feedbackClass },
+	                    this.props.userAnswer
+	                ),
+	                React.createElement(
+	                    "li",
+	                    null,
+	                    this.props.feedback
+	                )
+	            )
+	        );
+	    }
+	});
+
+	module.exports = FeedBackList;
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(263);
+	var content = __webpack_require__(265);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(256)(content, {});
@@ -28488,7 +28643,7 @@
 	}
 
 /***/ },
-/* 263 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(255)();
@@ -28496,19 +28651,19 @@
 
 
 	// module
-	exports.push([module.id, ".question {\n  display: flex;\n  flex-direction: column;\n  flex: 1 1 auto;\n  box-sizing: border-box;\n  background-color: #31b7bf; }\n  .question .question-text-wrapper {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    padding: 8px;\n    background-color: #C1E9EB; }\n  .question .question-options {\n    flex: 1 1 auto; }\n  .question .footer-btn {\n    display: flex;\n    flex-direction: column; }\n    .question .footer-btn button {\n      height: 46px; }\n", ""]);
+	exports.push([module.id, ".question {\n  display: flex;\n  flex-direction: column;\n  flex: 1 1 auto;\n  box-sizing: border-box;\n  background-color: #31b7bf; }\n  .question .question-text-wrapper {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    padding: 8px;\n    background-color: #C1E9EB; }\n  .question .question-options {\n    flex: 1 1 auto; }\n    .question .question-options .option-ul {\n      list-style: none;\n      margin-top: -8px; }\n      .question .question-options .option-ul li {\n        color: rgba(0, 0, 0, 0.87);\n        background-color: white;\n        padding: 8px;\n        margin: 0 40px 16px 0;\n        border-radius: 2px;\n        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3);\n        line-height: 1.3;\n        -webkit-tap-highlight-color: transparent; }\n  .question .feedback {\n    flex: 1 1 auto; }\n    .question .feedback ul {\n      list-style: none;\n      margin-top: -8px; }\n      .question .feedback ul li {\n        color: rgba(0, 0, 0, 0.87);\n        background-color: white;\n        padding: 24px;\n        margin: 0 40px 16px 0;\n        border-radius: 2px;\n        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3);\n        line-height: 1.3;\n        -webkit-tap-highlight-color: transparent; }\n      .question .feedback ul .correct-answer {\n        color: #FFF;\n        background-color: #93C70A;\n        line-height: 1.3; }\n      .question .feedback ul .in-correct-answer {\n        color: #FFF;\n        background-color: #D63400;\n        line-height: 1.3; }\n  .question .footer-btn {\n    display: flex;\n    flex-direction: column;\n    color: rgba(0, 0, 0, 0.87);\n    background-color: white; }\n    .question .footer-btn button {\n      height: 46px; }\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 264 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(265);
+	var content = __webpack_require__(267);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(256)(content, {});
@@ -28528,7 +28683,7 @@
 	}
 
 /***/ },
-/* 265 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(255)();
