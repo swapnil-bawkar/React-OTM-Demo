@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<match_choose_otm>
+  <instructions>&lt;p&gt;Watch. Choose True or False.&lt;/p&gt;</instructions>
+  <activityTitle>&lt;p&gt;Video&lt;/p&gt;</activityTitle>
+  <activitySubtitle />
+  <fontSize value="large" />
+  <activityMode value="practice" />
+  <timedMode value="none" />
+  <activityAudio />
+  <activityVideo>SC3e_OP_Starter_U01_ClassVideo.mp4</activityVideo>
+  <randomizeQuestions value="no" />
+  <randomizeAnswers value="no" />
+  <questions>
+    <question>
+      <Audio />
+      <Image />
+      <text>&lt;p&gt;She is a teacher.&lt;/p&gt;</text>
+      <answers>
+        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
+        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+      </answers>
+      <correctanswer>1</correctanswer>
+    </question>
+    <question>
+      <Audio />
+      <Image />
+      <text>&lt;p&gt;He is a teacher.&lt;/p&gt;</text>
+      <answers>
+        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
+        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+      </answers>
+      <correctanswer>2</correctanswer>
+    </question>
+    <question>
+      <Audio />
+      <Image />
+      <text>&lt;p&gt;Her name is David.&lt;/p&gt;</text>
+      <answers>
+        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
+        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+      </answers>
+      <correctanswer>2</correctanswer>
+    </question>
+    <question>
+      <Audio />
+      <Image />
+      <text>&lt;p&gt;He's from New York.&lt;/p&gt;</text>
+      <answers>
+        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
+        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+      </answers>
+      <correctanswer>2</correctanswer>
+    </question>
+    <question>
+      <Audio />
+      <Image />
+      <text>&lt;p&gt;She is great.&lt;/p&gt;</text>
+      <answers>
+        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
+        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+      </answers>
+      <correctanswer>2</correctanswer>
+    </question>
+    <question>
+      <Audio />
+      <Image />
+      <text>&lt;p&gt;He is good.&lt;/p&gt;</text>
+      <answers>
+        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
+        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+      </answers>
+      <correctanswer>1</correctanswer>
+    </question>
+    <question>
+      <Audio />
+      <Image />
+      <text>&lt;p&gt;They are in class.&lt;/p&gt;</text>
+      <answers>
+        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
+        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+      </answers>
+      <correctanswer>1</correctanswer>
+    </question>
+  </questions>
+</match_choose_otm>
+
