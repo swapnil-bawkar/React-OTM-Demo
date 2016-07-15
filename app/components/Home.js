@@ -38,7 +38,7 @@ var Home = React.createClass({
         );
     },
     handleClick: function () {
-        browserHistory.push('/question/1')
+        browserHistory.push('/question/0')
     }
 });
 

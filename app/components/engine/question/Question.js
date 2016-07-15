@@ -2,6 +2,8 @@
  * Created by sbawkar on 6/3/2016.
  */
 var React = require('react');
+var AnswerList = require('./AnswerList');
+var FeedBackList = require('./FeedBackList');
 require('./question.scss');
 
 var Question = React.createClass({
@@ -11,35 +13,28 @@ var Question = React.createClass({
     getInitialState: function() {
         return {
             btnText: 'CHECK',
-            currentQuestion: {},
-            checkBtnClicked: false
+            feedback: '',
+            feedbackClass: ''
         };
     },
-    render: function() {
-        var options = '';
-        if(this.props.question.answers) {
-            options = this.props.question.answers.answer.map(function (option, index) {
-                return <li key={index} onClick={this.onAnswerClick.bind(this, option)}><p>{option}</p></li>;
-            }.bind(this));
+    componentWillReceiveProps: function(nextProps) {
+        if(nextProps.endOfQuestion) {
+            this.setState({
+                btnText: 'VIEW RESULTS'
+            });
         }
+    },
+    render: function() {
         return (
             <div className="question">
-                <div className="image-wrapper">
-                    <img src=""/>
-                </div>
                 <div className="question-text-wrapper">
-                    <p>{this.props.question.text}</p>
+                    <p>{this.props.question && this.props.question.text}</p>
                 </div>
-                <div className="question-options">
-                    <ul className="option-ul">
-                        {options}
-                    </ul>
-                </div>
-                <div className="feedback">
-                    <ul>
-                        <li>{this.state.userAnswer}</li>
-                    </ul>
-                </div>
+                {this.props.question && !this.props.question.checkBtnClicked && <AnswerList answers={this.props.question.answers.answer}
+                                                    setUserAnswer={this.setUserAnswer}></AnswerList>}
+                {this.props.question && this.props.question.checkBtnClicked && <FeedBackList feedbackClass={this.state.feedbackClass}
+                                                      userAnswer={this.props.question.userAnswer}
+                                                      feedback={this.state.feedback}></FeedBackList>}
                 <div className="footer-btn">
                     <button type="button" onClick={this.handleClick}>{this.state.btnText}</button>
                 </div>
@@ -47,21 +42,34 @@ var Question = React.createClass({
        );
     },
     handleClick: function(event) {
+        if(event.currentTarget.innerHTML === 'NEXT') {
+            this.props.nextBtn();
+            this.setState({
+                btnText: 'CHECK',
+                feedback: '',
+                feedbackClass: ''
+            });
+        } else {
+            this.showFeedBack();
+        }
+    },
+    showFeedBack: function() {
+        var index = this.props.question.answers.answer.indexOf(this.props.question.userAnswer);
+        var correct = false;
+        if(index === 0) {
+            correct = true;
+        }
+        var feedback = correct ? 'Well Done' : 'The correct answer was '+this.props.question.answers.answer[0];
+        var feedbackClass = correct ? 'correct-answer' : 'in-correct-answer';
         this.setState({
             btnText: 'NEXT',
-            checkBtnClicked: true,
-            userAnswer: this.props.question.userAnswer
+            feedback: feedback,
+            feedbackClass: feedbackClass
         });
+        this.props.updateScoreBar(correct);
     },
-    onAnswerClick: function (option) {
-        var index = this.props.question.answers.answer.indexOf(option);
-        if(index === 0) {
-            this.props.question.correct = true;
-        } else {
-            this.props.question.correct = false;
-        }
-        this.props.question.userAnswer = option;
-        this.answerOption.style.backgroundColor = '#FFC400';
+    setUserAnswer: function (option) {
+        this.props.setUserAnswer(option);
     }
 });
 

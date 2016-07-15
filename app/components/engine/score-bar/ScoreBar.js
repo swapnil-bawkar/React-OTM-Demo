@@ -6,13 +6,17 @@ require('./score-bar.scss');
 
 var ScoreBar = React.createClass({
     propTypes: {
-        length: React.PropTypes.number.isRequired
+        questions: React.PropTypes.array.isRequired
     },
     render: function() {
-        var questionBar = [];
-        for(var i = 0; i < this.props.length; i++) {
-            questionBar.push(<div key={i}></div>);
-        }
+        var questionBar = this.props.questions.map(function(question, index) {
+            if(question.checkBtnClicked) {
+                return <div key={index} className={question.correct ? 'correct' : 'incorrect'}></div>;
+            } else {
+                return <div key={index}></div>
+            }
+        });
+
         return (
            <div className="score-bar-container">
                <div className="score-bar">
