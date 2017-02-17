@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <match_choose_otm>
-  <instructions>&lt;p&gt;Watch. Choose True or False.&lt;/p&gt;</instructions>
-  <activityTitle>&lt;p&gt;Video&lt;/p&gt;</activityTitle>
+  <instructions>Watch. Choose True or False.</instructions>
+  <activityTitle>Video</activityTitle>
   <activitySubtitle />
   <fontSize value="large" />
   <activityMode value="practice" />
@@ -14,70 +14,70 @@
     <question>
       <Audio />
       <Image />
-      <text>&lt;p&gt;She is a teacher.&lt;/p&gt;</text>
+      <text>She is a teacher.</text>
       <answers>
-        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
-        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+        <answer>True</answer>
+        <answer>False</answer>
       </answers>
       <correctanswer>1</correctanswer>
     </question>
     <question>
       <Audio />
       <Image />
-      <text>&lt;p&gt;He is a teacher.&lt;/p&gt;</text>
+      <text>He is a teacher.</text>
       <answers>
-        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
-        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+        <answer>True</answer>
+        <answer>False</answer>
       </answers>
       <correctanswer>2</correctanswer>
     </question>
     <question>
       <Audio />
       <Image />
-      <text>&lt;p&gt;Her name is David.&lt;/p&gt;</text>
+      <text>Her name is David.</text>
       <answers>
-        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
-        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+        <answer>True</answer>
+        <answer>False</answer>
       </answers>
       <correctanswer>2</correctanswer>
     </question>
     <question>
       <Audio />
       <Image />
-      <text>&lt;p&gt;He's from New York.&lt;/p&gt;</text>
+      <text>He's from New York.</text>
       <answers>
-        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
-        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+        <answer>True</answer>
+        <answer>False</answer>
       </answers>
       <correctanswer>2</correctanswer>
     </question>
     <question>
       <Audio />
       <Image />
-      <text>&lt;p&gt;She is great.&lt;/p&gt;</text>
+      <text>She is great.</text>
       <answers>
-        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
-        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+        <answer>True</answer>
+        <answer>False</answer>
       </answers>
       <correctanswer>2</correctanswer>
     </question>
     <question>
       <Audio />
       <Image />
-      <text>&lt;p&gt;He is good.&lt;/p&gt;</text>
+      <text>He is good.</text>
       <answers>
-        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
-        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+        <answer>True</answer>
+        <answer>False</answer>
       </answers>
       <correctanswer>1</correctanswer>
     </question>
     <question>
       <Audio />
       <Image />
-      <text>&lt;p&gt;They are in class.&lt;/p&gt;</text>
+      <text>They are in class.</text>
       <answers>
-        <answer>&lt;p&gt;True&lt;/p&gt;</answer>
-        <answer>&lt;p&gt;False&lt;/p&gt;</answer>
+        <answer>True</answer>
+        <answer>False</answer>
       </answers>
       <correctanswer>1</correctanswer>
     </question>
