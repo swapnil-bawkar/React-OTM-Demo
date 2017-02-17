@@ -10,7 +10,7 @@ var Home = require('../components/Home');
 var Engine = require('../components/engine/Engine');
 
 module.exports = (
-    <Route path="/" component={Main}>
+    <Route path="/React-OTM-Demo" component={Main}>
         <IndexRoute component={Home}></IndexRoute>
         <Route path="/question/:questionNo" component={Engine}></Route>
     </Route>
